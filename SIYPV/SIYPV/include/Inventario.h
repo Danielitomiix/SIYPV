@@ -1,6 +1,8 @@
 #pragma once
 #include "Prerequisitos.h"
 #include "Producto.h"
+#include "FabricaProducto.h"
+#include "Observer.h"
 
 /**
  * @class Inventario
@@ -20,10 +22,12 @@ public:
      * @brief Carga los productos desde un archivo JSON.
      * @param nombreArchivo Ruta o nombre del archivo JSON.
      */
-    void cargarDesdeJSON(const std::string& nombreArchivo){
+    void 
+    cargarDesdeJSON(const std::string& nombreArchivo){
       std::ifstream archivo(nombreArchivo);
       if (!archivo.is_open()) {
-          std::cout << "No se pudo abrir el archivo: " << nombreArchivo << std::endl;
+          std::cout << "No se pudo abrir el archivo: "
+            << nombreArchivo << std::endl;
           return;
       }
 
@@ -38,13 +42,15 @@ public:
         int cantidad = item["cantidad"];
         productos.emplace_back(codigo, nombre, precio, cantidad);
       }
-      std::cout << "Productos cargados correctamente desde " << nombreArchivo << std::endl;
+      std::cout << "Productos cargados correctamente desde " 
+                << nombreArchivo << std::endl;
     }
 
     /**
      * @brief Muestra todos los productos almacenados en el inventario.
      */
-    void mostrarInventario() const {
+    void 
+    mostrarInventario() const {
       if (productos.empty()) {
         std::cout << "No hay productos en el inventario." << std::endl;
         return;
@@ -60,10 +66,19 @@ public:
      * @param codigo Código del producto a vender.
      * @param cantidad Cantidad a vender.
      */
-    void venderProducto(const std::string& codigo, int cantidad) {
+    void 
+    venderProducto(const std::string& codigo, int cantidad) {
       for (auto& producto : productos) {
         if (producto.getCodigo() == codigo) {
           producto.vender(cantidad);
+          registrarTransaccion("VENTA", producto, cantidad);
+
+          if (producto.getCantidad() < 5) { // Umbral de stock bajo
+            notificarObservadores("El producto " + producto.getNombre() + 
+                                  " tiene stock bajo: " + 
+                                  std::to_string(producto.getCantidad()) +
+                                  " unidades restantes.");
+          }
           return;
         }
       }
@@ -75,10 +90,12 @@ public:
      * @param codigo Código del producto.
      * @param cantidad Cantidad comprada.
      */
-    void comprarProducto(const std::string& codigo, int cantidad) {
+    void 
+    comprarProducto(const std::string& codigo, int cantidad) {
       for (auto& producto : productos) {
         if (producto.getCodigo() == codigo) {
           producto.comprar(cantidad);
+          registrarTransaccion("COMPRA", producto, cantidad);
           return;
         }
       }
@@ -89,7 +106,8 @@ public:
      * @brief Guarda el inventario actual en el archivo JSON especificado.
      * @param nombreArchivo Nombre del archivo destino (por ejemplo, "productos.json").
      */
-    void guardarEnJSON(const std::string& nombreArchivo) const {
+    void 
+    guardarEnJSON(const std::string& nombreArchivo) const {
       json data = json::array(); //crea arreglo JSON vacío
 
       for (const auto& producto : productos) {
@@ -113,8 +131,9 @@ public:
     /**
      * @brief Agrega un nuevo producto al inventario solicitando datos al usuario.
      */
-    void agregarProducto() {
-      std::string codigo, nombre;
+    void 
+    agregarProducto() {
+      std::string codigo, nombre, tipo;
       float precio;
       int cantidad;
 
@@ -132,19 +151,35 @@ public:
       std::cin.ignore();
       std::cout << "Ingrese el nombre del nuevo producto: ";
       std::getline(std::cin, nombre);
-      std::cout << "Ingrese el precio del nuevo producto: ";
+
+      std::cout << "Ingrese el precio : ";
       std::cin >> precio;
-      std::cout << "Ingrese la cantidad inicial del nuevo producto: ";
+
+      std::cout << "Ingrese la cantidad: ";
       std::cin >> cantidad;
 
+      std::cin.ignore();
+      std::cout << "Ingrese el tipo de producto (Medicamento / Bebida / Snack): ";
+      std::getline(std::cin, tipo);
+
+      // Crear el producto usando la fábrica
+      ProductoBase* nuevoProducto = FabricaProducto::crearProducto(tipo, codigo, nombre, precio, cantidad);
+      if (!nuevoProducto) {
+        std::cout << "Tipo de producto invalido. No se creo el producto." << std::endl;
+        return;
+      }
+      // Convertir Producto base a Producto y agregar al inventario
       productos.emplace_back(codigo, nombre, precio, cantidad);
-      std::cout << "Producto agregado correctamente." << std::endl;
+      std::cout << "Producto agregado correctamente al inventario (" << tipo << ")." << std::endl;
+
+      delete nuevoProducto; // Liberar memoria
     }
 
     /**
      * @brief Edita los detalles de un producto existente.
      */
-    void editarProducto(const std::string& codigo) {
+    void 
+    editarProducto(const std::string& codigo) {
       for (auto& producto : productos) {
         if (producto.getCodigo() == codigo) {
           std::string nombre;
@@ -152,12 +187,18 @@ public:
           int cantidad;
 
           std::cin.ignore();
-          std::cout << "Ingrese el nuevo nombre del producto (" << producto.getNombre() << "): ";
+          std::cout << "Ingrese el nuevo nombre del producto (" 
+                    << producto.getNombre() << "): ";
           std::getline(std::cin, nombre);
-          std::cout << "Ingrese el nuevo precio del producto (" << producto.getPrecio() << "): ";
+
+          std::cout << "Ingrese el nuevo precio del producto (" 
+                    << producto.getPrecio() << "): ";
           std::cin >> precio;
-          std::cout << "Ingrese la nueva cantidad del producto (" << producto.getCantidad() << "): ";
+
+          std::cout << "Ingrese la nueva cantidad del producto (" 
+                    << producto.getCantidad() << "): ";
           std::cin >> cantidad;
+
           producto.setNombre(nombre);
           producto.setPrecio(precio);
           producto.setCantidad(cantidad);
@@ -171,7 +212,8 @@ public:
     /**
      * @brief Elimina un producto del inventario por su código.
      */
-    void eliminarProducto(const std::string& codigo) {
+    void 
+    eliminarProducto(const std::string& codigo) {
       for (auto it = productos.begin(); it != productos.end(); ++it) {
         if(it->getCodigo() == codigo){
           productos.erase(it);
@@ -186,7 +228,8 @@ public:
      * @brief Busca un producto en el inventario por su código o nombre.
      * @param clave Texto a buscar (puede ser el código o el nombre del producto).
      */
-    void buscarProducto(const std::string& clave) const {
+    void 
+    buscarProducto(const std::string& clave) const {
       bool encontrado = false;
 
       for (const auto& producto : productos) {
@@ -203,6 +246,41 @@ public:
       }
     }
 
+    // Sistema de observadores
+    void 
+    agregarObservador(Observer* obs) {
+      observadores.push_back(obs);
+    }
+
+    void 
+    notificarObservadores(const std::string& mensaje) const{
+      for (auto& obs : observadores) {
+        obs->actualizar(mensaje);
+      }
+    }
+
+    void 
+    registrarTransaccion(const std::string& tipo, const Producto& producto, int cantidad) {
+      FechaHora fecha;
+      fecha.getFechaHora();
+
+      std::ofstream archivo("historial.txt", std::ios::app);
+      if (!archivo.is_open()) {
+          std::cout << "Error: No se pudo abrir el archivo de historial." << std::endl;
+          return;
+      }
+      archivo << "[" << fecha.toString() << "] "
+              << tipo << " | " 
+              << "Codigo: " << producto.getCodigo()
+              << " | Producto: " << producto.getNombre()
+              << " | Cantidad: " << cantidad
+              << " | Stock actual: " << producto.getCantidad()
+              << std::endl;
+
+      archivo.close();
+    }
+
 private:
   std::vector<Producto> productos;  ///< Lista de productos en el inventario
+  std::vector<Observer*> observadores; ///< Lista de observadores para notificaciones
 };

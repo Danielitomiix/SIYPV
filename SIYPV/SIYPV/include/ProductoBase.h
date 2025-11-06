@@ -8,7 +8,7 @@
  * Contiene información esencial del producto (código, nombre, precio y cantidad).
  */
 class
-  ProductoBase {
+ProductoBase {
 public:
   ProductoBase() = default;
   ~ProductoBase() = default;

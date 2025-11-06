@@ -164,11 +164,13 @@
     <ClCompile Include="source\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\AlertaStock.h" />
     <ClInclude Include="include\Bebida.h" />
     <ClInclude Include="include\FabricaProducto.h" />
     <ClInclude Include="include\Inventario.h" />
     <ClInclude Include="include\json.hpp" />
     <ClInclude Include="include\Medicamento.h" />
+    <ClInclude Include="include\Observer.h" />
     <ClInclude Include="include\Prerequisitos.h" />
     <ClInclude Include="include\Producto.h" />
     <ClInclude Include="include\ProductoBase.h" />

@@ -9,13 +9,14 @@
  * además de una operación para mostrar información.
  */
 class
-  Bebida : public ProductoBase {
+Bebida : public ProductoBase {
 public:
   Bebida(const std::string& _codigo, const std::string& _nombre, float _precio, int _cantidad)
     : codigo(_codigo), nombre(_nombre), precio(_precio), cantidad(_cantidad) {}
   ~Bebida() = default;
 
-  void mostrarInfo() const override {
+  void 
+  mostrarInfo() const override {
     std::cout << "[Bebida] " << nombre 
               << " | Codigo: " << codigo
               << " | Nombre: " << nombre

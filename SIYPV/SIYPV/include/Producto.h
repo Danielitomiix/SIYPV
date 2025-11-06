@@ -27,14 +27,20 @@ public:
     int getCantidad() const { return cantidad; }
 
     //Setters
-    void setNombre(const std::string& _nombre) { nombre = _nombre; }
-    void setPrecio(float _precio) { precio = _precio; }
-    void setCantidad(int _cantidad) { cantidad = _cantidad; }
+    void 
+    setNombre(const std::string& _nombre) { nombre = _nombre; }
+
+    void 
+    setPrecio(float _precio) { precio = _precio; }
+
+    void 
+    setCantidad(int _cantidad) { cantidad = _cantidad; }
 
     /**
     * @brief Muestra en consola la información completa del producto.
     */
-    void mostrarInfo() const {
+    void 
+    mostrarInfo() const {
          std::cout << "Codigo: "     << codigo 
                    << " | Nombre: "  << nombre
                    << " | Precio: $" << precio  
@@ -46,7 +52,8 @@ public:
      * @brief Reduce el stock del producto al realizar una venta.
      * @param cantidadVendida Cantidad de unidades vendidas.
      */
-    void vender(int cantidadVendida) {
+    void 
+    vender(int cantidadVendida) {
            if (cantidad >= cantidadVendida) {
                cantidad -= cantidadVendida;
            std::cout << "Venta realizada: - " << cantidadVendida << " unidades." << std::endl;
@@ -58,7 +65,8 @@ public:
      * @brief Aumenta el stock del producto al realizar una compra.
      * @param cantidadComprada Cantidad de unidades compradas.
      */
-    void comprar(int cantidadComprada) {
+    void 
+    comprar(int cantidadComprada) {
          cantidad += cantidadComprada;
          std::cout << "Compra registrada: + " << cantidadComprada << " unidades." << std::endl;
     }
