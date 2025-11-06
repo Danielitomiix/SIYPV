@@ -1,21 +1,21 @@
 [
   {
+    "cantidad": 100,
     "codigo": "A001",
     "nombre": "Paracetamol 500mg",
-    "precio": 25.50,
-    "cantidad": 100
+    "precio": 25.50
   },
   {
+    "cantidad": 45,
     "codigo": "A002",
     "nombre": "Coca-cola 600ml",
-    "precio": 18.00,
-    "cantidad": 45
+    "precio": 18.00
   },
   {
+    "cantidad": 60,
     "codigo": "A003",
     "nombre": "Galleta oreo",
-    "precio": 12.50,
-    "cantidad": 60
+    "precio": 12.50
   },
   {
     "cantidad": 80,
