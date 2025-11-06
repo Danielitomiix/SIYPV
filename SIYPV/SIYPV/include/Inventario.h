@@ -264,6 +264,7 @@ public:
       FechaHora fecha;
       fecha.getFechaHora();
 
+      // Registrar en archivo de historial
       std::ofstream archivo("historial.txt", std::ios::app);
       if (!archivo.is_open()) {
           std::cout << "Error: No se pudo abrir el archivo de historial." << std::endl;
@@ -278,6 +279,35 @@ public:
               << std::endl;
 
       archivo.close();
+
+      // === Generar ticket solo si es una venta ===
+      if (tipo == "VENTA") {
+        std::ofstream ticket("ticket.txt");
+        if (!ticket.is_open()) {
+            std::cout << "Error: No se pudo abrir el archivo de ticket." << std::endl;
+            return;
+        }
+
+        float subtotal = producto.getPrecio() * cantidad;
+
+        ticket << " OXXO - Sistema de Venta\n";
+        ticket << "--------------------------\n";
+        ticket << "Fecha: " << fecha.toString() << "\n";
+        ticket << "Cajero: Daniel Vargas\n";
+        ticket << "Producto: " << producto.getNombre() << "\n";
+        ticket << "Codigo: " << producto.getCodigo() << "\n";
+        ticket << "Cantidad vendida: " << cantidad << "\n";
+        ticket << "Precio unitario: $" << producto.getPrecio() << "\n";
+        ticket << "Subtotal: $" << subtotal << "\n";
+        ticket << "-------------------------\n";
+        ticket << "TOTAL A PAGAR: $" << subtotal << "\n";
+        ticket << "-------------------------\n";
+        ticket << "Gracias por su compra!\n";
+        ticket << "OXXO - Siempre listos para ti\n";
+        ticket.close();
+
+        std::cout << "Ticket generado exitosamente: 'ticket.txt'." << std::endl;
+      }
     }
 
 private:
