@@ -59,4 +59,9 @@
       <Filter>Archivos de origen</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="bin\historial.txt">
+      <Filter>Archivos de origen</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

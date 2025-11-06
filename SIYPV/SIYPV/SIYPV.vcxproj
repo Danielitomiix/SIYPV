@@ -179,6 +179,9 @@
   <ItemGroup>
     <None Include="source\productos.json" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="bin\historial.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
