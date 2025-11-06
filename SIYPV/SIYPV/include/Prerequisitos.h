@@ -9,7 +9,7 @@
 
 //Libreria json
 #include "json.hpp"
-using Json = nlohmann::json;
+using json = nlohmann::json;
 
 /**
  * @struct FechaHora
