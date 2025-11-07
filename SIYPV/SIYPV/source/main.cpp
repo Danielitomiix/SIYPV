@@ -34,7 +34,7 @@ int main() {
   inventario.agregarObservador(&alerta);
 
   // Cargar inventario desde archivo JSON
-  inventario.cargarDesdeJSON("productos.json");
+  inventario.cargarDesdeJSON("../source/productos.json");
 
   int opcion = 0;
   std::string codigo, nombre;
@@ -94,7 +94,7 @@ int main() {
       inventario.eliminarProducto(codigo);
       break;
     case 8:
-      inventario.guardarEnJSON("productos.json");
+      inventario.guardarEnJSON("../source/productos.json");
       break;
     case 9:
       std::cout << "Saliendo del sistema. Hasta luego!" << std::endl;
