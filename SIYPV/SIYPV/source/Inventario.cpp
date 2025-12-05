@@ -297,7 +297,7 @@ void
 Inventario::generarTicketFinal(PagoStrategy* metodoPago){
   if (!metodoPago)
   {
-    std::cout << "Error: Método de pago inválido.\n";
+    std::cout << "Error: Metodo de pago invalido.\n";
     return;
   }
 
@@ -353,7 +353,7 @@ Inventario::generarTicketFinal(PagoStrategy* metodoPago){
 
   ticket << "IVA (16%): $" << iva << "\n";
   ticket << "TOTAL FINAL: $" << totalFinal << "\n";
-  ticket << "Método de pago: " << metodoPago->getNombreMetodo() << "\n";
+  ticket << "Metodo de pago: " << metodoPago->getNombreMetodo() << "\n";
   ticket << "========================================\n";
   ticket << "¡Gracias por su compra!\n";
 
@@ -365,7 +365,7 @@ Inventario::generarTicketFinal(PagoStrategy* metodoPago){
   * Generar factura
   */
   char opcionFactura;
-  std::cout << "¿Desea generar una factura? (s/n): ";
+  std::cout << " Desea generar una factura? (s/n): ";
   std::cin >> opcionFactura;
 
   if (opcionFactura == 's' || opcionFactura == 'S')
@@ -381,7 +381,7 @@ Inventario::generarTicketFinal(PagoStrategy* metodoPago){
     std::cout << "Ingrese su RFC: ";
     std::cin >> rfc;
 
-    std::cout << "Ingrese su correo electrónico: ";
+    std::cout << "Ingrese su correo electronico: ";
     std::cin >> correo;
 
     Factura factura;
