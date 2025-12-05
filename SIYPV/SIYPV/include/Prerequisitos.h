@@ -49,3 +49,17 @@ FechaHora {
 			std::to_string(segundo);
 	}
 };
+
+/// Enum para los métodos de pago disponibles
+enum class MetodoPago {
+	Efectivo = 1, // 1 para efectivo
+	TarjetaCredito = 2, // 2 para tarjeta de crédito
+	TarjetaDebito = 3 // 3 para tarjeta de débito
+};
+
+//Tipos de combustible para gasolinera
+enum class TipoCombustible {
+	GasolinaMagna = 1,   // Gasolina Magna
+	GasolinaPremium = 2,   // Gasolina Premium
+	Diesel = 3,   // Diesel 
+};
